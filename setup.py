@@ -23,9 +23,14 @@ def readme():
 
 
 def get_version():
-    with open(os.path.join(pwd, version_file), 'r') as f:
-        exec(compile(f.read(), version_file, 'exec'))
-    return locals()['__version__']
+    frame_locals = {}
+    with open(os.path.join(pwd, version_file), 'r') as f:        
+        exec(
+            compile(f.read(), version_file, 'exec'),
+            globals(),
+            frame_locals
+        )
+    return frame_locals["__version__"]
 
 
 def parse_requirements(fname='requirements.txt', with_version=True):
